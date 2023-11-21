@@ -13,26 +13,27 @@ const renderStars = (num: number) => {
 const GetReviews = () => {
     const [data, setData] = useState<any[]>([])
     const { contract } = useEthStore(state => state)
-    const getFeedbacks = async () => {
-        console.log("contract", contract)
-        const items = await contract.getAllReviews()
-        console.log("items", items)
-        setData(items)
-        const [reviewIds, companyNames, ratings, comments, dates] = items;
-
-        const reviewsData = reviewIds.map((id, index) => ({
-            id: id.toNumber(),
-            companyName: companyNames[index],
-            rating: ratings[index],
-            comment: comments[index],
-            date: new Date(dates[index] * 1000).toLocaleDateString(),
-        }));
-
-        setData(reviewsData);
-    }
+    
     useEffect(() => {
+        const getFeedbacks = async () => {
+            console.log("contract", contract)
+            const items = await contract.getAllReviews()
+            console.log("items", items)
+            setData(items)
+            const [reviewIds, companyNames, ratings, comments, dates] = items;
+
+            const reviewsData = reviewIds.map((id: any, index: number) => ({
+                id: id.toNumber(),
+                companyName: companyNames[index],
+                rating: ratings[index],
+                comment: comments[index],
+                date: new Date(dates[index] * 1000).toLocaleDateString(),
+            }));
+
+            setData(reviewsData);
+        }
         getFeedbacks()
-    }, [])
+    }, [contract])
     return (
         <div>
             <div className="relative overflow-x-auto my-7">
@@ -58,7 +59,7 @@ const GetReviews = () => {
                     </thead>
                     <tbody>
                         {
-                            data.map((item, index) => {
+                            data.map((item) => {
                                 return <tr key={'2'} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {item.id}

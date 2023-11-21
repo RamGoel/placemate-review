@@ -2,9 +2,6 @@ import { useEthStore } from '@/store/ethStore';
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import reviewSchema from './add-review.schema';
-import Navbar from '../navbar/Navbar';
-
-
 
 const AddReview = () => {
     const [review, setReview] = useState<any>(null)
@@ -12,7 +9,6 @@ const AddReview = () => {
     const [hash, setHash] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
     const handleSubmit = () => {
-
         if (!review) return;
         setLoading(true)
         const data = {
@@ -30,7 +26,7 @@ const AddReview = () => {
                 setLoading(false)
 
             } catch {
-                (err) => {
+                (err:any) => {
                     toast.error("Something went wrong")
                     console.log("error", err)
                 }
@@ -40,10 +36,6 @@ const AddReview = () => {
             toast.error(err.message)
             return;
         })
-
-
-
-
 
     }
 

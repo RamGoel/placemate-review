@@ -10,6 +10,7 @@ import Navbar from './components/navbar/Navbar';
 
 
 const getProviderAndSigner = () => {
+  //@ts-ignore
   const provider = new ethers.providers.Web3Provider(window.ethereum)
   const signer = provider.getSigner();
   const review = new ethers.Contract(address, ABI, signer)
@@ -20,6 +21,7 @@ const FeebackPage = () => {
 
   const { setProvider, setContract, setAccount, account } = useEthStore(state => state)
   useEffect(() => {
+    //@ts-ignore
     if (!window.ethereum) return;
     const { provider, review } = getProviderAndSigner()
     setProvider(provider)
