@@ -3,12 +3,15 @@ import Navbar from '../components/navbar/Navbar'
 import React from 'react'
 import AddReview from '../components/add-review/add-review.component';
 import { useEthStore } from '@/store/ethStore';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
     const {account, setAccount} = useEthStore(state => state)
+    const router=useRouter()
 
+    
     if (!account) {
-        window.location.href = "/"
+        router.push('/')
         return <>Sign in to use application</>
     }
     return (

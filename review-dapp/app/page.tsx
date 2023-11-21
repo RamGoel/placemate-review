@@ -26,7 +26,7 @@ const FeebackPage = () => {
     const { provider, review } = getProviderAndSigner()
     setProvider(provider)
     setContract(review)
-  }, [])
+  }, [setContract, setProvider])
 
   return (
     <div className=''>
