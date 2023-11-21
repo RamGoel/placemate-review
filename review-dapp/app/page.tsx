@@ -1,35 +1,43 @@
+
+
 "use client";
-import Navbar from './components/Navbar'
-import React, { useState, useEffect } from 'react'
-import ReviewList from './components/ReviewList';
-import AddProduct from './components/AddProduct';
-import { ethers } from 'ethers'
+import React, { useEffect } from 'react'
+import GetReviews from './components/get-reviews/get-reviews.component'
 import { useEthStore } from '@/store/ethStore';
-import { ABI } from './abi/abi';
-import ProductList from './components/ProductList';
+import { ethers } from 'ethers'
+import { ABI, address } from '@/utils/contract';
+import Navbar from './components/navbar/Navbar';
+
 
 const getProviderAndSigner = () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum)
   const signer = provider.getSigner();
-  const dappazon = new ethers.Contract('0x5fbdb2315678afecb367f032d93f642f64180aa3', ABI, signer)
-
-  return { provider, dappazon }
+  const review = new ethers.Contract(address, ABI, signer)
+  return { provider, review }
 }
-export default function Home() {
-  const { setProvider, setContract, setAccount, account } = useEthStore(state => state)
 
+const FeebackPage = () => {
+
+  const { setProvider, setContract, setAccount, account } = useEthStore(state => state)
   useEffect(() => {
-    const { provider, dappazon } = getProviderAndSigner()
+    if (!window.ethereum) return;
+    const { provider, review } = getProviderAndSigner()
     setProvider(provider)
-    setContract(dappazon)
+    setContract(review)
   }, [])
 
   return (
-    <div className="">
+    <div className=''>
       <Navbar account={account} setAccount={(val: any) => setAccount(val)} />
-      <h1 className="text-3xl text-center my-10">Welcome to Review System</h1>
-      <AddProduct />
-      <ProductList />
+
+      <div className='mt-5 p-5'>
+        
+      <h1 className='text-3xl font-semibold'>View all Feebacks</h1>
+      <p className='text-gray-500'>Recent Transactions can take some time to reflect here, please check some time later</p>
+        {account ? <GetReviews /> : <p className=' my-5 font-semibold'> ⓘ Please connect to metamask to use application</p>}
+      </div>
     </div>
   )
 }
+
+export default FeebackPage
