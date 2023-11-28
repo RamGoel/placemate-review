@@ -13,8 +13,9 @@ const renderStars = (num: number) => {
 const GetReviews = () => {
     const [data, setData] = useState<any[]>([])
     const { contract } = useEthStore(state => state)
-    
+    const {account}=useEthStore(state=>state)
     useEffect(() => {
+
         const getFeedbacks = async () => {
             console.log("contract", contract)
             const items = await contract.getAllReviews()
@@ -32,8 +33,11 @@ const GetReviews = () => {
 
             setData(reviewsData);
         }
-        getFeedbacks()
-    }, [contract])
+
+        if (account) {
+            getFeedbacks()
+        }
+    }, [contract, account])
     return (
         <div>
             <div className="relative overflow-x-auto my-7">
@@ -59,10 +63,10 @@ const GetReviews = () => {
                     </thead>
                     <tbody>
                         {
-                            data.map((item) => {
+                            data.length?data.map((item, index) => {
                                 return <tr key={'2'} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {item.id}
+                                        {index+1}
                                     </th>
                                     <td className="px-6 py-4">
                                         {item.companyName}
@@ -77,7 +81,7 @@ const GetReviews = () => {
                                         {item.comment}
                                     </td>
                                 </tr>
-                            })
+                            }) : <p>No feedbacks present as of now :)</p>
                         }
                     </tbody>
                 </table>

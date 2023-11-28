@@ -1,5 +1,8 @@
+"use client";
+
+import { useSearchParams } from 'next/navigation'
 import { useEthStore } from '@/store/ethStore';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import reviewSchema from './add-review.schema';
 
@@ -8,6 +11,17 @@ const AddReview = () => {
     const { contract } = useEthStore(state => state)
     const [hash, setHash] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
+
+    const searchParams = useSearchParams()
+    const queryCompany = searchParams.get('company')
+
+    useEffect(() => {
+        if (queryCompany) {
+            setReview({ ...review, company: queryCompany })
+        }
+    }, [])
+    
+
     const handleSubmit = () => {
         if (!review) return;
         setLoading(true)
@@ -46,13 +60,13 @@ const AddReview = () => {
                 e.preventDefault()
                 handleSubmit()
             }} className="w-full mx-auto">
-                <input required={true} onChange={(e) => {
+                <input value={review?.company} required={true} onChange={(e) => {
                     setReview({ ...review, company: e.target.value })
                 }} className="p-2 block rounded-md my-2 w-full text-black" placeholder="Company Name" />
-                <textarea required={true} onChange={(e) => {
+                <textarea value={review?.comment} required={true} onChange={(e) => {
                     setReview({ ...review, comment: e.target.value })
                 }} className="p-2 block rounded-md my-2 w-full text-black" placeholder="Your Experience" />
-                <input max={5} min={0} type='number' required={true} onChange={(e) => {
+                <input value={review?.rating} max={5} min={0} type='number' required={true} onChange={(e) => {
                     setReview({ ...review, rating: e.target.value })
                 }} className="p-2 block rounded-md my-2 w-full text-black" placeholder="Rating out of 5" />
 

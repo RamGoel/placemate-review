@@ -1,6 +1,7 @@
 import React from 'react'
 import { ethers } from 'ethers';
 import Link from 'next/link';
+import { Home2, Icon } from 'iconsax-react';
 const Navbar = ({ account, setAccount, isAddButtonHidden }: { account: any, isAddButtonHidden?: boolean, setAccount: Function }) => {
     const connectHandler = async () => {
         //@ts-ignore
@@ -12,9 +13,14 @@ const Navbar = ({ account, setAccount, isAddButtonHidden }: { account: any, isAd
     return (
         <div className='bg-gray-900 flex items-center justify-between px-3 py-4'>
 
-            <h1 className="text-xl ">Placemate Reviews</h1>
+            <Link className='flex items-center' href={'/'}>
+                <h1 className="text-xl cursor-pointer">
+                    <Home2 size={25} />
+                </h1>
+                <h1 className="text-xl ml-2">Placemate Reviews</h1>
+            </Link>
             <div className='w-50 flex justify-end items-center'>
-                {!isAddButtonHidden ? <Link href={'/add'}><button className={`p-2 bg-transparent border-2 border-yellow-500 rounded-lg mx-2`}>Add a Feeback</button></Link> : null}
+                {!isAddButtonHidden ? <Link href={'/add?company=Veersa Technologies Noida'}><button className={`p-2 bg-transparent border-2 border-yellow-500 rounded-lg mx-2`}>Add a Feeback</button></Link> : null}
                 {
                     account
                         ? <h2 >{account}</h2>
